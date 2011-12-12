@@ -1,10 +1,5 @@
-
-public class Tree {
-
-	private class Node {
-	
-	}
-
+public class Tree<T extends Comparable<T>> {
+	private Node<T> root;
 	//---------------------------
 	// Constructors
 	public Tree(){
@@ -17,15 +12,31 @@ public class Tree {
 	/**
 	 * Voeg een element toe aan de tree
 	 */
-	public void insert(Object o){
-		
+	public boolean insert(T o){
+		if(root != null){
+			return root.add(new Node<T>(o));
+		} else {
+			root = new Node<T>(o);
+			return true;
+		}
 	}
 	
 	/**
 	 * Verwijder een object uit de boom
 	 */
-	public void remove(/*Studentnummer*/){
-		
+	public boolean remove(T o){
+		if(root == null){
+			return false;
+		}
+		if(root.data.equals(o)){
+			Node<T> tmp = new Node<T>(null);
+			tmp.left = root;
+			boolean ret = root.remove(o,tmp);
+			root = tmp.left;
+			return ret;
+		} else {
+			return root.remove(o, null);
+		}
 	}
 	
 	
@@ -33,8 +44,8 @@ public class Tree {
 	 * Zoek een studentnummer in de boom en return 
 	 * het oject
 	 */
-	public Object find(/*Studentnummer*/){
-		return new Object();
+	public T find(T t){
+		return root.find(t);
 	}
 	
 	public boolean isBalanced(){
@@ -52,6 +63,15 @@ public class Tree {
 	 * Print de tree In-Order
 	 */
 	public String toString(){
-		return "";
-	}	
+		return "Call print()";
+	}
+	
+	public void print(){
+		int depth = 0;
+		boolean notDone = true;
+		while(notDone){
+			notDone = root.print(depth++);
+			System.out.println("");
+		}
+	}
 }
